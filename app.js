@@ -1,22 +1,22 @@
-//Todo lo relacionado con express (módulos, middlewares, configuraciones etc)
+const express = require('express');
+const openAI = require('openai');
+const bodyParser = require('body-parser');
+//const morgan = require('morgan');
+const path = require('path');
+const myRouter = require('./routes/misRutas');
 
-const express = require("express");
-const path = require("path");
-const morgan = require("morgan");
+// Importamos dotenv para acceder a variables de entorno
+require('dotenv').config();
 const app = express();
-const myRouter = require("./routes/myRouter");
-//Defino el motor de plantillas a utilizar
-app.set("view engine", "ejs");
-//Defino la localización de mis vistas
-app.set("views", path.join(__dirname, "views"));
-
-//Middlewares
-app.use(morgan("dev"));
-//Middleware para poder obtener data de los requests con BodyParser
+/* MIDDLEWARES */
+//app.use(morgan('dev'));
 app.use(express.json());
 //Configurando archivos estáticos
-app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
-//Agrego un enrutador compatible
-app.use("/", myRouter);
-module.exports = app;
+app.use('/', myRouter);
+module.exports = app
+
